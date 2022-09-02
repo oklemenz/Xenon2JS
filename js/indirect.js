@@ -106,3 +106,7 @@ function* indirectCall(seg, ptr)
             break;
     }
 }
+
+function _STOP_(cmd) {
+    console.log("STOP: " + cmd);
+}
