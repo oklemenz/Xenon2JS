@@ -36,6 +36,14 @@ Xenon 2 reimplementation written in HTML5 / JavaScript
   - `npm start`
 - Browser: `localhost:8080`
 
+## Options
+
+Url parameters are leveraged to save game state automatically (shortcut in brackets)
+
+- `invincible (i)`: Ship is invincible. Shield is auto-recharged
+
+Url: https://xenon2js.oklemenz.de/?i
+
 ## Credits
 
 - https://github.com/gabonator/Projects

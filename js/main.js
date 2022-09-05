@@ -43,7 +43,13 @@ var ctx = can.getContext('2d');
 can.width = 320;
 can.height = 200;
 var data = ctx.createImageData(can.width, can.height);
+
 var inShop = false;
+var isInvincible = false;
+let query = new URLSearchParams(window.location.search);
+if (query.has("i")) {
+  isInvincible = true;
+}
 
 function display() {
   var p = 0;
@@ -90,7 +96,7 @@ var sequence = start();
   setInterval(() => {
     if (mousePos) {
       var shx = memory16get(_dseg * 16 + 40704 + 18); // 0x9f12
-      var shy = memory16get(_dseg * 16 + 40704 + 22); // 0x9f16
+      var shy = memory16get(_dseg * 16 + 40704 + 22) + 15; // 0x9f16
       if (inShop) {
         if (mousePos.x >= can.width / 4 && mousePos.x <= 3 * can.width / 4 && mousePos.y <= can.height / 4) {
           memory[_dseg * 16 + 0x8f59] |= 1; // up
@@ -167,10 +173,10 @@ window.onMove = (p) => {
 //}
 
 function assert(x) {
-  if (!x)
-    throw new Error("assertion failed");
+  if (!x) {
+    console.log("STOP: Assertion failed");
+  }
 }
-
 
 document.onkeydown = function (evt) {
   evt = evt || window.event;
