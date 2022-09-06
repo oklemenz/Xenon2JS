@@ -4853,7 +4853,7 @@ function* sub_13615() {
     } while (1);
 }
 function* sub_13682() {
-    inShop = false;
+    inGame = true;
     var pc = 0;
     do switch (pc) {
     case 0:
@@ -6149,7 +6149,7 @@ function* sub_13C75() {
             break;
         }
     case 0x14078:
-        inShop = true;
+        inGame = false;
         yield* sub_14A69();
         yield* sub_10E91();
     case 0x1407E:

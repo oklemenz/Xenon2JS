@@ -91,6 +91,7 @@
   }
 
   function getTouchPos(canvasDom, touchEvent) {
+    multiTouch = touchEvent.touches.length > 1;
     return getEventPos(canvasDom, touchEvent.touches[0]);
   }
 })();

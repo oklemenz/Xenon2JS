@@ -44,12 +44,13 @@ can.width = 320;
 can.height = 200;
 var data = ctx.createImageData(can.width, can.height);
 
-var inShop = false;
+var inGame = false;
 var isInvincible = false;
 let query = new URLSearchParams(window.location.search);
 if (query.has("i")) {
   isInvincible = true;
 }
+let multiTouch = false;
 
 function display() {
   var p = 0;
@@ -97,7 +98,25 @@ var sequence = start();
     if (mousePos) {
       var shx = memory16get(_dseg * 16 + 40704 + 18); // 0x9f12
       var shy = memory16get(_dseg * 16 + 40704 + 22) + 15; // 0x9f16
-      if (inShop) {
+      if (inGame) {
+        if (shx !== 0 || shy !== 0) {
+          if (mousePos.x < shx - 10)
+            memory[_dseg * 16 + 0x8f59] |= 4; // left
+          else if (mousePos.x > shx + 10)
+            memory[_dseg * 16 + 0x8f59] |= 8; // right
+          else
+            memory[_dseg * 16 + 0x8f59] &= ~(4 | 8);
+
+          if (multiTouch)
+            memory[_dseg * 16 + 0x8f59] |= 2; // down
+          else if (mousePos.y < shy - 10)
+            memory[_dseg * 16 + 0x8f59] |= 1; // up
+          else if (mousePos.y > shy + 10)
+            memory[_dseg * 16 + 0x8f59] |= 2; // down
+          else
+            memory[_dseg * 16 + 0x8f59] &= ~(1 | 2);
+        }
+      } else {
         if (mousePos.x >= can.width / 4 && mousePos.x <= 3 * can.width / 4 && mousePos.y <= can.height / 4) {
           memory[_dseg * 16 + 0x8f59] |= 1; // up
         } else if (mousePos.x >= can.width / 4 && mousePos.x <= 3 * can.width / 4 && mousePos.y >= 3 * can.height / 4) {
@@ -112,22 +131,6 @@ var sequence = start();
           space(); // space
         }
         mousePos = null;
-      } else {
-        if (shx !== 0 || shy !== 0) {
-          if (mousePos.x < shx - 10)
-            memory[_dseg * 16 + 0x8f59] |= 4; // left
-          else if (mousePos.x > shx + 10)
-            memory[_dseg * 16 + 0x8f59] |= 8; // right
-          else
-            memory[_dseg * 16 + 0x8f59] &= ~(4 | 8);
-
-          if (mousePos.y < shy - 10)
-            memory[_dseg * 16 + 0x8f59] |= 1; // up
-          else if (mousePos.y > shy + 10)
-            memory[_dseg * 16 + 0x8f59] |= 2; // down
-          else
-            memory[_dseg * 16 + 0x8f59] &= ~(1 | 2);
-        }
       }
     }
     sequence.next();
@@ -135,7 +138,7 @@ var sequence = start();
   }, 50);
 
   setInterval(() => {
-    if (mousePos && !inShop) {
+    if (mousePos && inGame) {
       space(); // auto fire on touch/mobile
     }
   }, 200);
@@ -152,7 +155,7 @@ function space() {
 
 window.onPress = (p) => {
   mousePos = p;
-  if (!inShop) {
+  if (inGame) {
     space();
   }
 }

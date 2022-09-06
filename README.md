@@ -15,7 +15,8 @@ Xenon 2 reimplementation written in HTML5 / JavaScript
 - Touch Controls (tap area on screen)
   - Game:
     - Move: Touch screen to move ship
-    - Backwards: Touch directly below ship (bottom of screen)
+    - Backwards: Two-Finger touch
+
   - Shop:
     - Up: Touch top/middle to move cursor up
     - Down: Touch bottom/middle to move cursor down

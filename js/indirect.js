@@ -47,7 +47,7 @@ function* indirectCall(seg, ptr)
                      yield* loc_1308C(); break; // rearshot powerup
         case 0x39ee: yield* sub_139EE(); break; // draw fire
         case 0x091f: yield* sub_1091F(); break; // draw fire
-        case 0x0897: yield* sub_10897(); break; // lv2 boss
+        case 0x0897: break; // yield* sub_10897(); break; // lv2 boss (ends in endless-loop)
         case 0x3998: yield* sub_13998(); break; // explosion anim
         case 0x41fb: yield* sub_141FB(); break; // explosion cleanup
         case 0x1f4d: yield* sub_11F4D(); break; // tree bulet move
