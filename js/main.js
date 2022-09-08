@@ -97,24 +97,25 @@ var sequence = start();
   setInterval(() => {
     if (mousePos) {
       var shx = memory16get(_dseg * 16 + 40704 + 18); // 0x9f12
-      var shy = memory16get(_dseg * 16 + 40704 + 22) + 15; // 0x9f16
+      var shy = memory16get(_dseg * 16 + 40704 + 22); // 0x9f16
+      memory[_dseg * 16 + 0x8f59] = 0;
       if (inGame) {
         if (shx !== 0 || shy !== 0) {
-          if (mousePos.x < shx - 10)
-            memory[_dseg * 16 + 0x8f59] |= 4; // left
-          else if (mousePos.x > shx + 10)
-            memory[_dseg * 16 + 0x8f59] |= 8; // right
-          else
-            memory[_dseg * 16 + 0x8f59] &= ~(4 | 8);
-
           if (multiTouch)
             memory[_dseg * 16 + 0x8f59] |= 2; // down
-          else if (mousePos.y < shy - 10)
-            memory[_dseg * 16 + 0x8f59] |= 1; // up
-          else if (mousePos.y > shy + 10)
-            memory[_dseg * 16 + 0x8f59] |= 2; // down
-          else
-            memory[_dseg * 16 + 0x8f59] &= ~(1 | 2);
+          else {
+            if (mousePos.x < shx - 10) {
+              memory[_dseg * 16 + 0x8f59] |= 4; // left
+            } else if (mousePos.x > shx + 10) {
+              memory[_dseg * 16 + 0x8f59] |= 8; // right
+            }
+
+            if (mousePos.y < shy + 10) {
+              memory[_dseg * 16 + 0x8f59] |= 1; // up
+            } else if (mousePos.y > shy + 25) {
+              memory[_dseg * 16 + 0x8f59] |= 2; // down
+           }
+          }
         }
       } else {
         if (mousePos.x >= can.width / 4 && mousePos.x <= 3 * can.width / 4 && mousePos.y <= can.height / 4) {
