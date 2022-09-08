@@ -8,7 +8,6 @@
   // Set up mouse events for drawing
   var drawing = false;
   var mousePos = { x: 0, y: 0 };
-  var lastPos = mousePos;
   canvas.addEventListener("mousedown", function (e) {
     window.onPress(getMousePos(canvas, e));
   }, false);
@@ -32,12 +31,14 @@
   }, false);
 
   canvas.addEventListener("touchend", function (e) {
+    mousePos = getTouchPos(canvas, e);
     var mouseEvent = new MouseEvent("mouseup", {});
     canvas.dispatchEvent(mouseEvent);
     e.preventDefault();
   }, false);
 
   canvas.addEventListener("touchmove", function (e) {
+    mousePos = getTouchPos(canvas, e);
     var touch = e.touches[0];
     var mouseEvent = new MouseEvent("mousemove", {
       clientX: touch.clientX,
@@ -91,7 +92,9 @@
   }
 
   function getTouchPos(canvasDom, touchEvent) {
-    multiTouch = touchEvent.touches.length > 1;
-    return getEventPos(canvasDom, touchEvent.touches[0]);
+    touchCount = touchEvent.touches.length;
+    if (touchCount > 0) {
+      return getEventPos(canvasDom, touchEvent.touches[0]);
+    }
   }
 })();

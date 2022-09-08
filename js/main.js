@@ -50,7 +50,7 @@ let query = new URLSearchParams(window.location.search);
 if (query.has("i")) {
   isInvincible = true;
 }
-let multiTouch = false;
+let touchCount = 0;
 
 function display() {
   var p = 0;
@@ -101,7 +101,7 @@ var sequence = start();
       memory[_dseg * 16 + 0x8f59] = 0;
       if (inGame) {
         if (shx !== 0 || shy !== 0) {
-          if (multiTouch)
+          if (touchCount > 1)
             memory[_dseg * 16 + 0x8f59] |= 2; // down
           else {
             if (mousePos.x < shx - 10) {
@@ -162,8 +162,10 @@ window.onPress = (p) => {
 }
 
 window.onRelease = (p) => {
-  mousePos = null;
-  memory[_dseg * 16 + 0x8f59] = 0;
+  if (touchCount === 0) {
+    mousePos = null;
+    memory[_dseg * 16 + 0x8f59] = 0;
+  }
 }
 
 window.onMove = (p) => {
