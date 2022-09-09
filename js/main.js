@@ -142,7 +142,7 @@ var sequence = start();
     if (mousePos && inGame) {
       space(); // auto fire on touch/mobile
     }
-  }, 200);
+  }, 100);
 }
 
 var _k = 0;
